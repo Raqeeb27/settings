@@ -13,7 +13,7 @@ torch_state = False
 notificationList = ['Say \'SubhanAllah\' X 3',
                     'Say \'Allhamdulillah\' X 3',
                     'Say \'AllahuAkbar\' X 4',
-                    'Say \'Laa Ilaaha Illah....\'',                    
+                    'Say \'Laa Ilaaha Illah....\'',
                     'Say \'Subhanallahi Wabihamdihi....\'',
                     'Recite \'3rd Kalima\' (Subhanallahi Walhamdulillahi....)',
                     'Recite \'4th Kalima\' (Laa Ilaaha Illalahu Wahdahu.....)',
@@ -208,7 +208,7 @@ def mySettings():
                     else:
                         print(f"{red}\nInvalid Volume input. Please enter Integer value between "
                               f"[0 - 100]\n{dim}Just press \'Enter\' to Exit.{reset}")
-                        
+
                 except:
                     print(f"{red}\nInvalid Volume input. Please enter Integer value between [0 - 100]\n"
                           f"{dim}Just press \'Enter\' to Exit.{reset}")
@@ -218,7 +218,7 @@ def mySettings():
 
             volume_input = input(f"{cyan}0. Exit       1. System        2. Call        3. Ring\n"
                                  f"4. Music      5. Notification       6. Alarm{reset}\n\n---> ")
-            
+
             if volume_input in ['',' ','0'] :
                 print()
                 break
