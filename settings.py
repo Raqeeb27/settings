@@ -163,33 +163,42 @@ def mySettings():
         print(f"{dim}Press \' ctrl + c \' to Cancel...{reset}\n")
 
         while True:
-            next_notification_min = start_min + notificationDelay
-            randamNotification = choice(notificationList)
+            try:
+                next_notification_min = start_min + notificationDelay
+                randamNotification = choice(notificationList)
 
-            currentLocalTime = localtime()
-            #current_hour = int(strftime("%H", currentLocalTime))
-            current_min = int(strftime("%M", currentLocalTime))
-            current_sec = int(strftime("%S", currentLocalTime))            
+                currentLocalTime = localtime()
+                #current_hour = int(strftime("%H", currentLocalTime))
+                current_min = int(strftime("%M", currentLocalTime))
+                current_sec = int(strftime("%S", currentLocalTime))            
 
-            if 59 < next_notification_min  :
-                next_notification_min = next_notification_min - 60
+                if 59 < next_notification_min  :
+                    next_notification_min = next_notification_min - 60
 
-            if current_min == next_notification_min and current_sec == 0 :
-                os.system(f"termux-notification --content \"{randamNotification}\" ")
-                print(f"\n{randamNotification}\n")
+                if current_min == next_notification_min and current_sec == 0 :
+                    os.system(f"termux-notification --content \"{randamNotification}\" ")
+                    print(f"\n{randamNotification}\n")
 
-                if vibration in ['Y', 'YES'] :
-                    os.system("termux-vibrate -f -d 1500")
-                    pass
-                if flash in ['Y', 'YES'] :
-                    os.system("termux-torch on")
-                    sleep(0.5)
-                    os.system("termux-torch off")
+                    if vibration in ['Y', 'YES'] :
+                        os.system("termux-vibrate -f -d 1500")
+                        pass
+                    if flash in ['Y', 'YES'] :
+                        os.system("termux-torch on")
+                        sleep(0.25)
+                        os.system("termux-torch off")
 
-                start_min = next_notification_min
-                print(f"{yellow}{bold}\n------ Getting Random Notification ------{reset}")
-                print(f"{dim}Press \' ctrl + c \' to Cancel...{reset}\n")
-                sleep(notificationDelay * 60 - 4)
+                    start_min = next_notification_min
+                    print(f"{yellow}{bold}\n------ Getting Random Notification ------{reset}")
+                    print(f"{dim}Press \' ctrl + c \' to Cancel...{reset}\n")
+                    sleep(notificationDelay * 60 - 3)
+
+            except KeyboardInterrupt:
+                print(f"Notifications cancelled.\nExiting",end='',flush = True)
+                for i in range(5):
+                    print(".",end = "", flush = True)
+                    sleep(0.2)
+                print("\n")
+                exit()
 
     elif setting == '6' :
         def volume_change(vol_name):
