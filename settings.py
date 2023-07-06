@@ -145,21 +145,35 @@ def mySettings():
         vibration = input("\nVibrate on Notification.....[\'y\' or \'n\'] : ").upper()
 
         try:
-            notificationDelay = int(input("\nEnter Time Delay for next Notification (in Minutes) : "))
+            notificationDelay = int(input("\nEnter Time Delay for next Notification (in Minutes <= 60) : "))
+            if notificationDelay > 60 :
+                print(f"{red}{dim}Enter Delay less than hour (60 min)\n{reset}")
+                return
+            elif notificationDelay <= 0:
+                print(f"{red}{dim}\nMinutes should be a Positive Integer Value < \'60\'\n{reset}")
+                return
+
         except ValueError :
-            print(f"{red}{dim}\nMinutes should be a Positive Integer Value > \'0\'\n{reset}")
+            print(f"{red}{dim}\nMinutes should be a Positive Integer Value < \'60\'\n{reset}")
             return
 
         currentLocalTime = localtime()
+        current_hour = int(strftime("%H", currentLocalTime)) 
         current_min = int(strftime("%M", currentLocalTime)) 
+
         if start_min != current_min:
             start_min = current_min
 
-        if notificationDelay <= 0:
-            print(f"{red}{dim}\nMinutes should be a Positive Integer Value > \'0\'\n{reset}")
-            return
-
         print(f"{yellow}{bold}\n------ Getting Random Notification ------{reset}")
+        if start_min + notificationDelay > 59:
+            current_hour = current_hour + 1
+            display_min = start_min + notificationDelay - 60
+        else:
+            display_min = start_min + notificationDelay
+        if display_min < 10:
+            print(f"{dim}Next Notification at : --- {current_hour}:0{display_min} ---{reset}")
+        else:
+            print(f"{dim}Next Notification at : --- {current_hour}:{display_min} ---{reset}")
         print(f"{dim}Press \' ctrl + c \' to Cancel...{reset}\n")
 
         while True:
@@ -168,12 +182,13 @@ def mySettings():
                 randamNotification = choice(notificationList)
 
                 currentLocalTime = localtime()
-                #current_hour = int(strftime("%H", currentLocalTime))
+                current_hour = int(strftime("%H", currentLocalTime))
                 current_min = int(strftime("%M", currentLocalTime))
                 current_sec = int(strftime("%S", currentLocalTime))            
 
-                if 59 < next_notification_min  :
+                if next_notification_min > 59 :
                     next_notification_min = next_notification_min - 60
+                    current_hour = current_hour + 1
 
                 if current_min == next_notification_min and current_sec == 0 :
                     os.system(f"termux-notification --content \"{randamNotification}\" ")
@@ -189,11 +204,19 @@ def mySettings():
 
                     start_min = next_notification_min
                     print(f"{yellow}{bold}\n------ Getting Random Notification ------{reset}")
+                    if start_min == 0:
+                        print(f"{dim}Next Notification at : --- {current_hour - 1}:0{start_min + notificationDelay} ---{reset}")
+                    elif start_min + notificationDelay < 10:
+                        print(f"{dim}Next Notification at : --- {current_hour}:0{start_min + notificationDelay} ---{reset}")
+                    elif start_min + notificationDelay == 60:
+                        print(f"{dim}Next Notification at : --- {current_hour + 1}:00 ---{reset}")
+                    else:
+                        print(f"{dim}Next Notification at : --- {current_hour}:{start_min + notificationDelay} ---{reset}")
                     print(f"{dim}Press \' ctrl + c \' to Cancel...{reset}\n")
                     sleep(notificationDelay * 60 - 3)
 
             except KeyboardInterrupt:
-                print(f"Notifications cancelled.\nExiting",end='',flush = True)
+                print(f"\nNotifications cancelled.\nExiting",end='',flush = True)
                 for i in range(5):
                     print(".",end = "", flush = True)
                     sleep(0.2)
