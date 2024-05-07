@@ -197,7 +197,7 @@ def termux_notification():
                 current_hour = current_hour + 1
 
             if current_min == next_notification_min and current_sec == 0 :
-                os.system(f"termux-notification --content \"{randamNotification}\" ")
+                os.system(f"termux-notification --content \"Zikar Time\" --title \"{randamNotification}\" --image-path $(find ~ -type d -name settings)/Zikr_Image.jpeg")
 
                 print(f"\n{randamNotification}\n")
 
